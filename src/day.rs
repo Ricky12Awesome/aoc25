@@ -27,6 +27,16 @@ pub enum OutputResults {
     Part2(Output),
 }
 
+impl OutputResults {
+    pub fn is_part1(&self) -> bool {
+        matches!(self, OutputResults::Both(_, _) | OutputResults::Part1(_))
+    }
+
+    pub fn is_part2(&self) -> bool {
+        matches!(self, OutputResults::Both(_, _) | OutputResults::Part2(_))
+    }
+}
+
 impl From<ArgPart> for OutputResults {
     fn from(value: ArgPart) -> Self {
         match value {
