@@ -1,3 +1,4 @@
 #![allow(unused)]
 
-pub use crate::{day, part1, part2};
+pub(crate) use crate::day::*;
+pub(crate) use crate::{part1, part2};

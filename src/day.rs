@@ -82,10 +82,10 @@ macro_rules! part2 {
     };
 }
 
-#[macro_export]
-macro_rules! day {
-    (|$input:ident, $results:ident| $body:block) => {
-        #[allow(unused)]
-        pub fn run($input: &str, $results: &mut $crate::day::OutputResults) -> ::anyhow::Result<()> $body
-    };
-}
+// #[macro_export]
+// macro_rules! day {
+//     (|$input:ident, $results:ident| $body:block) => {
+//         #[allow(unused)]
+//         pub fn run($input: &str, $results: &mut $crate::day::OutputResults) -> ::anyhow::Result<()> $body
+//     };
+// }
