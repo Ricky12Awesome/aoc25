@@ -19,6 +19,7 @@ use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
 use std::io::Read;
 use std::path::PathBuf;
+use std::time::Instant;
 
 #[derive(ValueEnum, Debug, Copy, Clone)]
 enum ArgDay {
@@ -102,6 +103,8 @@ fn main() -> anyhow::Result<()> {
 
     let mut results = OutputResults::from(args.part);
 
+    let time = Instant::now();
+
     match args.day {
         ArgDay::Day1 => day01::run(&input, &mut results)?,
         ArgDay::Day2 => day02::run(&input, &mut results)?,
@@ -117,7 +120,10 @@ fn main() -> anyhow::Result<()> {
         ArgDay::Day12 => day12::run(&input, &mut results)?,
     };
 
+    let time = time.elapsed();
+
     println!("{results}");
+    println!("took {time:?}");
 
     Ok(())
 }

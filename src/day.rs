@@ -27,6 +27,7 @@ pub enum OutputResults {
     Part2(Output),
 }
 
+#[allow(unused)]
 impl OutputResults {
     pub fn is_part1(&self) -> bool {
         matches!(self, OutputResults::Both(_, _) | OutputResults::Part1(_))
@@ -36,6 +37,9 @@ impl OutputResults {
         matches!(self, OutputResults::Both(_, _) | OutputResults::Part2(_))
     }
 }
+
+unsafe impl Send for OutputResults {}
+unsafe impl Sync for OutputResults {}
 
 impl From<ArgPart> for OutputResults {
     fn from(value: ArgPart) -> Self {
