@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use crate::prelude::*;
-use itertools::Itertools;
 
 pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
     let input = input

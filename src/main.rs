@@ -51,12 +51,12 @@ enum ArgDay {
 
 #[derive(ValueEnum, Default, Debug, Copy, Clone)]
 enum ArgPart {
-    #[clap(aliases = &["0"])]
+    #[clap(aliases = &["0", "all"])]
     #[default]
     Both = 0,
-    #[clap(aliases = &["1"])]
+    #[clap(aliases = &["1", "one"])]
     Part1 = 1,
-    #[clap(aliases = &["2"])]
+    #[clap(aliases = &["2", "two"])]
     Part2 = 2,
 }
 
