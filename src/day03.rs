@@ -29,7 +29,7 @@ pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
         .map(|digits| digits.collect_vec())
         .fold((0u128, 0u128), |(mut p1, mut p2), digits| {
             if results.is_part1() {
-                p1 += max(&digits, 12);
+                p1 += max(&digits, 2);
             }
 
             if results.is_part2() {
