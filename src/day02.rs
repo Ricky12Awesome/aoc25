@@ -41,8 +41,8 @@ pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
         )
         .reduce(|| (0, 0), |(a1, a2), (b1, b2)| ((a1 + b1), (a2 + b2)));
 
-    part1!(results, p1);
-    part2!(results, p2);
+    part1!(results, "{p1}");
+    part2!(results, "{p2}");
 
     Ok(())
 }

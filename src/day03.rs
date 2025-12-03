@@ -39,8 +39,10 @@ pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
             (p1, p2)
         });
 
-    part1!(results, p1);
-    part2!(results, p2);
+    // format!()
+
+    part1!(results, "{p1}");
+    part2!(results, "{p2}");
 
     Ok(())
 }

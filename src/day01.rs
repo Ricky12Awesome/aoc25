@@ -35,8 +35,8 @@ pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
         acc = acc.rem_euclid(100);
     }
 
-    part1!(results, format!("{:?}", p1));
-    part2!(results, format!("{:?}", p2));
+    part1!(results, "{p1}");
+    part2!(results, "{p2}");
 
     Ok(())
 }
