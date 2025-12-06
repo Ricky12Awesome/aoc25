@@ -11,8 +11,6 @@ pub fn run(str: &str, results: &mut OutputResults) -> anyhow::Result<()> {
         .fold(vec![Vec::new(); ops.len()], |mut acc, line| {
             for (i, n) in line.enumerate() {
                 acc[i].push(n);
-                acc[i].sort();
-                acc[i].reverse();
             }
 
             acc
