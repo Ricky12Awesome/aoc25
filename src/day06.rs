@@ -1,7 +1,7 @@
 #![allow(unused)]
 use crate::prelude::*;
 
-pub fn run(str: &str, results: &mut OutputResults) -> anyhow::Result<()> {
+pub fn run(str: &str, results: &mut OutputResults) {
     let mut input = str.trim().rsplit("\n");
     let ops = input.next().unwrap();
     let ops = ops.split_whitespace().collect_vec();
@@ -77,6 +77,12 @@ pub fn run(str: &str, results: &mut OutputResults) -> anyhow::Result<()> {
     }
 
     part2!(results, "{p2}");
+}
 
-    Ok(())
+pub(crate) fn bench_part1(input: &str) {
+    panic!("unimplemented");
+}
+
+pub(crate) fn bench_part2(input: &str) {
+    panic!("unimplemented");
 }

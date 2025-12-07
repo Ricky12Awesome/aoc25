@@ -2,7 +2,7 @@
 
 use crate::prelude::*;
 
-pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
+pub fn run(input: &str, results: &mut OutputResults) {
     let input = input
         .split(",")
         .map(|s| s.split_once("-").unwrap())
@@ -43,6 +43,12 @@ pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
 
     part1!(results, "{p1}");
     part2!(results, "{p2}");
+}
 
-    Ok(())
+pub(crate) fn bench_part1(input: &str) {
+    panic!("unimplemented");
+}
+
+pub(crate) fn bench_part2(input: &str) {
+    panic!("unimplemented");
 }

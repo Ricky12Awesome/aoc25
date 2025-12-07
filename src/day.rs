@@ -53,7 +53,7 @@ macro_rules! part1 {
             }
             $crate::day::OutputResults::Part1(result) => {
                 *result = format!($($arg)*);
-                return Ok(());
+                return;
             }
             $crate::day::OutputResults::Part2(_) => {}
         }
@@ -70,7 +70,7 @@ macro_rules! part2 {
             $crate::day::OutputResults::Part1(_) => {}
             $crate::day::OutputResults::Part2(result) => {
                 *result = format!($($arg)*);
-                return Ok(());
+                return;
             }
         }
     };

@@ -27,7 +27,7 @@ fn get_adjacent_and_self(grid: &Grid, x: usize, y: usize) -> [Option<&char>; 9] 
     ]
 }
 
-pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
+pub fn run(input: &str, results: &mut OutputResults) {
     let grid = input
         .lines()
         .map(|line| line.chars().collect_vec())
@@ -89,6 +89,12 @@ pub fn run(input: &str, results: &mut OutputResults) -> anyhow::Result<()> {
     }
 
     part2!(results, "{p2}");
+}
 
-    Ok(())
+pub(crate) fn bench_part1(input: &str) {
+    panic!("unimplemented");
+}
+
+pub(crate) fn bench_part2(input: &str) {
+    panic!("unimplemented");
 }

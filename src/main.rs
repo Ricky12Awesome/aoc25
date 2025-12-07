@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 mod day;
 mod day01;
 mod day02;
@@ -19,9 +21,11 @@ use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
 use std::io::Read;
 use std::path::PathBuf;
-use std::time::Instant;
+use std::str::FromStr;
+use std::time::{Duration, Instant};
 
 #[derive(ValueEnum, Debug, Copy, Clone)]
+#[repr(usize)]
 enum ArgDay {
     #[clap(aliases = &["1"])]
     Day1 = 1,
@@ -49,7 +53,8 @@ enum ArgDay {
     Day12 = 12,
 }
 
-#[derive(ValueEnum, Default, Debug, Copy, Clone)]
+#[derive(ValueEnum, Default, Debug, Copy, Clone, Eq, PartialEq)]
+#[repr(usize)]
 enum ArgPart {
     #[clap(aliases = &["0", "all"])]
     #[default]
@@ -62,10 +67,12 @@ enum ArgPart {
 
 #[derive(Parser, Debug)]
 struct Args {
-    #[clap(long, short, default_value = "1")]
-    day: ArgDay,
+    #[clap(long, short)]
+    day: Option<ArgDay>,
     #[clap(long, short, default_value = "0")]
     part: ArgPart,
+    #[clap(short, long)]
+    bench: bool,
     #[clap(num_args = 0..=1)]
     input_path: Option<PathBuf>,
     #[clap(short)]
@@ -92,38 +99,110 @@ impl Args {
     }
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() {
     let args = Args::parse();
 
-    let Some(input) = args.input()? else {
+    let Some(input) = args.input().unwrap() else {
         Args::command()
             .error(ErrorKind::TooFewValues, "No input found")
             .exit();
     };
 
+    let Some(day) = args.day.or_else(|| {
+        args.input_path
+            .map(|path| path.with_extension(""))
+            .and_then(|path| ArgDay::from_str(path.file_name()?.to_str()?, true).ok())
+    }) else {
+        Args::command()
+            .error(
+                ErrorKind::InvalidValue,
+                "Can't infer day from path or no day was given",
+            )
+            .exit();
+    };
+
+    if args.bench {
+        if cfg!(debug_assertions) {
+            Args::command()
+                .error(
+                    ErrorKind::Io,
+                    "this argument can't run in debug mode, please use release mode.",
+                )
+                .exit();
+        }
+
+        let options = microbench::Options::default();
+
+        let part1 = match day {
+            ArgDay::Day1 => day01::bench_part1,
+            ArgDay::Day2 => day02::bench_part1,
+            ArgDay::Day3 => day03::bench_part1,
+            ArgDay::Day4 => day04::bench_part1,
+            ArgDay::Day5 => day05::bench_part1,
+            ArgDay::Day6 => day06::bench_part1,
+            ArgDay::Day7 => day07::bench_part1,
+            ArgDay::Day8 => day08::bench_part1,
+            ArgDay::Day9 => day09::bench_part1,
+            ArgDay::Day10 => day10::bench_part1,
+            ArgDay::Day11 => day11::bench_part1,
+            ArgDay::Day12 => day12::bench_part1,
+        };
+
+        let part1 = || part1(&input);
+
+        let part2 = match day {
+            ArgDay::Day1 => day01::bench_part2,
+            ArgDay::Day2 => day02::bench_part2,
+            ArgDay::Day3 => day03::bench_part2,
+            ArgDay::Day4 => day04::bench_part2,
+            ArgDay::Day5 => day05::bench_part2,
+            ArgDay::Day6 => day06::bench_part2,
+            ArgDay::Day7 => day07::bench_part2,
+            ArgDay::Day8 => day08::bench_part2,
+            ArgDay::Day9 => day09::bench_part2,
+            ArgDay::Day10 => day10::bench_part2,
+            ArgDay::Day11 => day11::bench_part2,
+            ArgDay::Day12 => day12::bench_part2,
+        };
+
+        let part2 = || part2(&input);
+
+        if args.part == ArgPart::Part1 || args.part == ArgPart::Both {
+            let name = format!("Day {} Part 1", day as usize);
+
+            microbench::bench(&options, &name, part1);
+        }
+
+        if args.part == ArgPart::Part2 || args.part == ArgPart::Both {
+            let name = format!("Day {} Part 2", day as usize);
+
+            microbench::bench(&options, &name, part2);
+        }
+
+        return;
+    }
+
     let mut results = OutputResults::from(args.part);
 
     let time = Instant::now();
 
-    match args.day {
-        ArgDay::Day1 => day01::run(&input, &mut results)?,
-        ArgDay::Day2 => day02::run(&input, &mut results)?,
-        ArgDay::Day3 => day03::run(&input, &mut results)?,
-        ArgDay::Day4 => day04::run(&input, &mut results)?,
-        ArgDay::Day5 => day05::run(&input, &mut results)?,
-        ArgDay::Day6 => day06::run(&input, &mut results)?,
-        ArgDay::Day7 => day07::run(&input, &mut results)?,
-        ArgDay::Day8 => day08::run(&input, &mut results)?,
-        ArgDay::Day9 => day09::run(&input, &mut results)?,
-        ArgDay::Day10 => day10::run(&input, &mut results)?,
-        ArgDay::Day11 => day11::run(&input, &mut results)?,
-        ArgDay::Day12 => day12::run(&input, &mut results)?,
+    match day {
+        ArgDay::Day1 => day01::run(&input, &mut results),
+        ArgDay::Day2 => day02::run(&input, &mut results),
+        ArgDay::Day3 => day03::run(&input, &mut results),
+        ArgDay::Day4 => day04::run(&input, &mut results),
+        ArgDay::Day5 => day05::run(&input, &mut results),
+        ArgDay::Day6 => day06::run(&input, &mut results),
+        ArgDay::Day7 => day07::run(&input, &mut results),
+        ArgDay::Day8 => day08::run(&input, &mut results),
+        ArgDay::Day9 => day09::run(&input, &mut results),
+        ArgDay::Day10 => day10::run(&input, &mut results),
+        ArgDay::Day11 => day11::run(&input, &mut results),
+        ArgDay::Day12 => day12::run(&input, &mut results),
     };
 
     let time = time.elapsed();
 
     println!("{results}");
     println!("took {time:?}");
-
-    Ok(())
 }
