@@ -40,17 +40,17 @@ pub(crate) fn bench_part1(input: &str) {
 }
 
 pub(crate) fn bench_part2(input: &str) {
-    let mut grid = input.lines().map(|line| line.bytes());
+    let mut grid = input.lines();
 
-    let start = grid.next().unwrap().position(|c| c == b'S').unwrap();
-
-    let mut beams = FxHashSet::with_capacity_and_hasher(256, FxBuildHasher);
-    beams.insert(start);
+    let start = grid.next().unwrap().len() / 2;
 
     let mut sum_buf = [0; 256];
+    let mut beams = FxHashSet::with_capacity_and_hasher(256, FxBuildHasher);
+
+    beams.insert(start);
     sum_buf[start] = 1;
 
-    for row in grid {
+    for row in grid.map(str::bytes) {
         for (x, c) in row.enumerate() {
             if c == b'^' && beams.contains(&x) {
                 let curr = sum_buf[x];
@@ -71,5 +71,6 @@ pub(crate) fn bench_part2(input: &str) {
     // Day 7 Part 2 (5.0s) ...               35_833.189 ns/iter (0.999 R²)
     // Day 7 Part 2 (5.0s) ...               26_296.319 ns/iter (0.997 R²)
     // Day 7 Part 2 (5.0s) ...               20_137.905 ns/iter (0.998 R²)
+    // Day 7 Part 2 (5.0s) ...               18_698.586 ns/iter (1.000 R²)
     assert_eq!(sum, 3223365367809);
 }
